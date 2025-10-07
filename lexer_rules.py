@@ -24,7 +24,7 @@ reserved = {
 tokens = [
     'PERCENT',
     'NUMBER',
-    'KEYWORD',
+    'COMMAND',
     'OPTION',
     'COMMA',
     'PLUS',
@@ -67,7 +67,7 @@ def infer_command(text):
     else:
         return None
 
-def t_KEYWORD(t):
+def t_COMMAND(t):
     r'[a-z_]+'
     inferred = infer_command(t.value)
     if inferred:
