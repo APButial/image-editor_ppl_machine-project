@@ -54,9 +54,27 @@ def t_NUMBER(t):
     t.value = float(t.value) if '.' in t.value else int(t.value)
     return t
 
+def infer_command(text):
+    """
+        infers entered command for auto-completion
+    """    
+    matches = [cmd for cmd in reserved.keys() if cmd.startswith(text)]
+    if len(matches) == 1:
+        return matches[0]
+    elif len(matches) > 1:
+        print(f"Ambiguous command '{text}'. Possible matches: {matches}")
+        return None
+    else:
+        return None
+
 def t_KEYWORD(t):
     r'[a-z_]+'
-    t.type = reserved.get(t.value, 'KEYWORD')
+    inferred = infer_command(t.value)
+    if inferred:
+        t.type = reserved[inferred]
+        t.value = inferred
+    else:
+        t.type = reserved.get(t.value, 'KEYWORD')
     return t
 
 def t_OPTION(t):
