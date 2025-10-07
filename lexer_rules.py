@@ -65,7 +65,6 @@ def infer_command(text):
         print(f"Ambiguous command '{text}'. Possible matches: {matches}")
         return None
     else:
-        print(f"Unrecognized command '{text}'.")
         return None
 
 def t_COMMAND(t):
@@ -84,6 +83,7 @@ def t_COMMAND(t):
         else:
             # unrecognized command
             t.type = 'COMMAND'
+            print(f"Unrecognized command '{t.value}'.")
     return t
 
 def t_OPTION(t):
