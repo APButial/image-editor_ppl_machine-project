@@ -84,7 +84,6 @@ def t_COMMAND(t):
         else:
             # unrecognized command
             t.type = 'COMMAND'
-            print(f"Unrecognized command '{t.value}'.")
     return t
 
 def t_OPTION(t):
