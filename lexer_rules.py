@@ -65,16 +65,26 @@ def infer_command(text):
         print(f"Ambiguous command '{text}'. Possible matches: {matches}")
         return None
     else:
+        print(f"Unrecognized command '{text}'.")
         return None
 
 def t_COMMAND(t):
     r'[a-z_]+'
+    # command inference
     inferred = infer_command(t.value)
+
     if inferred:
+        # match found
         t.type = reserved[inferred]
         t.value = inferred
     else:
-        t.type = reserved.get(t.value, 'KEYWORD')
+        # inference failed, try if in reserved
+        if t.value in reserved:
+            t.type = reserved[t.value]
+        else:
+            # unrecognized command
+            t.type = 'COMMAND'
+            print(f"Unrecognized command '{t.value}'.")
     return t
 
 def t_OPTION(t):
