@@ -75,25 +75,26 @@ def infer_command(text):
         return None
 
 def t_COMMAND(t):
+    # command must only be lowercase characters, no digits
     r'[a-z_]+'
-
-    # command inference
-    inferred = infer_command(t.value)
-
-    if inferred:
-        # match found
-        t.type = 'COMMAND'
-        t.value = inferred
-    else:
-        # inference failed, try if in reserved
-        if t.value in reserved:
-            t.type = 'COMMAND'
-            t.value = t.value
-        else:
-            # unrecognized command
-            print(f"Unrecognized command '{t.value}")
-            t.type = 'COMMAND'
     return t
+
+    # # command inference # disabled for now, use in parser
+    # inferred = infer_command(t.value)
+
+    # if inferred:
+    #     # match found
+    #     t.type = 'COMMAND'
+    #     t.value = inferred
+    # else:
+    #     # inference failed, try if in reserved
+    #     if t.value in reserved:
+    #         t.type = 'COMMAND'
+    #         t.value = t.value
+    #     else:
+    #         # unrecognized command
+    #         t.type = 'COMMAND'
+    # return t
 
 def t_OPTION(t):
     r'-[a-z]+'
