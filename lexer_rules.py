@@ -77,6 +77,12 @@ def infer_command(text):
 def t_COMMAND(t):
     # command must only be lowercase characters, no digits
     r'[a-z_]+'
+    t.value = t.value.lower()
+    if t.value in reserved:
+        t.is_reserved = True
+    else:
+        t.is_reserved = False
+    t.type = 'COMMAND'
     return t
 
     # # command inference # disabled for now, use in parser
