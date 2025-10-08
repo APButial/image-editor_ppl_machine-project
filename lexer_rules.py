@@ -21,9 +21,10 @@ reserved = {
     'vignette': 'VIGNETTE',
 }
 
-tokens = [
+tokens = (
     'PERCENT',
     'NUMBER',
+    'STRING',
     'COMMAND',
     'OPTION',
     'COMMA',
@@ -33,7 +34,7 @@ tokens = [
     'DIVIDE',
     'LPAREN',
     'RPAREN'
-] + list(reserved.values())
+)
 
 t_COMMA = r','
 t_PLUS = r'\+'
@@ -54,6 +55,12 @@ def t_NUMBER(t):
     t.value = float(t.value) if '.' in t.value else int(t.value)
     return t
 
+def t_STRING(t):
+    # string must be wrapped with double quotation
+    r'"([^"\\]|\\.)*"'
+    t.value = bytes(t.value[1:-1], "utf-8").decode("unicode_escape")
+    return t
+
 def infer_command(text):
     """
         infers entered command for auto-completion
@@ -69,19 +76,22 @@ def infer_command(text):
 
 def t_COMMAND(t):
     r'[a-z_]+'
+
     # command inference
     inferred = infer_command(t.value)
 
     if inferred:
         # match found
-        t.type = reserved[inferred]
+        t.type = 'COMMAND'
         t.value = inferred
     else:
         # inference failed, try if in reserved
         if t.value in reserved:
-            t.type = reserved[t.value]
+            t.type = 'COMMAND'
+            t.value = t.value
         else:
             # unrecognized command
+            print(f"Unrecognized command '{t.value}")
             t.type = 'COMMAND'
     return t
 
