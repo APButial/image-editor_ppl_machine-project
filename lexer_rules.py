@@ -75,8 +75,13 @@ def infer_command(text):
         return None
 
 def t_COMMAND(t):
-    # command must only be lowercase characters, no digits
-    r'[a-z_]+'
+    r'[A-Za-z_][A-Za-z_0-9]*'
+    
+    # reject commands with digit
+    if any(ch.isdigit() for ch in t.value):
+        print(f"Invalid command: '{t.value}' (commands cannot contain digits)")
+        return None
+
     t.value = t.value.lower()
     if t.value in reserved:
         t.is_reserved = True
