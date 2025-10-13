@@ -80,14 +80,13 @@ def t_COMMAND(t):
         return t
     elif len(matches) > 1:
         # ambiguous
-        print(f"Ambiguous command '{t.value}': possible matches {', '.join(matches)}")
+        print(f"Ambiguous command '{t.value}': possible matches [{', '.join(matches)}]")
         t.lexer.skip(1)
         return None
     else:
-        # unknown command
-        print(f"Unknown command: '{t.value}'")
-        t.lexer.skip(1)
-        return None
+        # unknown command - will be handled by parser
+        t.type = 'COMMAND'
+        return t
 
 def t_FILENAME(t):
     # filename must be wrapped with double quotation
