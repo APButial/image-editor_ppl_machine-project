@@ -47,16 +47,16 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_ignore = ' \t'
 
+def t_NUMBER(t):
+    r'\d+(\.\d+)?'
+    t.value = float(t.value) if '.' in t.value else int(t.value)
+    return t
+
 def t_INVALID_NUMBER(t):
     r'\d+[A-Za-z_]\w*'
     print(f"Invalid numeric literal: '{t.value}' (digits cannot contain alphabetic characters)")
     t.lexer.skip(1)
     return None
-
-def t_NUMBER(t):
-    r'\d+(\.\d+)?'
-    t.value = float(t.value) if '.' in t.value else int(t.value)
-    return t
 
 def t_COMMAND(t):
     r'[A-Za-z_][A-Za-z0-9_]*'
@@ -77,6 +77,7 @@ def t_COMMAND(t):
         # unique
         t.value = matches[0]
         t.type = reserved[matches[0]]
+        return t
     elif len(matches) > 1:
         # ambiguous
         print(f"Ambiguous command '{t.value}': could mean {', '.join(matches)}")
