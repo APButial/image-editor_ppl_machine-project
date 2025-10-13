@@ -45,6 +45,22 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_ignore = ' \t'
 
+def t_COMMAND(t):
+    r'[A-Za-z0-9_]+'
+    
+    # reject commands with digit
+    if any(ch.isdigit() for ch in t.value):
+        print(f"Invalid command: '{t.value}' (commands cannot contain digits)")
+        return None
+
+    t.value = t.value.lower()
+    if t.value in reserved:
+        t.is_reserved = True
+    else:
+        t.is_reserved = False
+    t.type = 'COMMAND'
+    return t
+
 def t_PERCENT(t):
     r'(\d+(\.\d+)?)%'
     t.value = float(t.value[:-1])  # exclude percent sign
@@ -73,22 +89,6 @@ def infer_command(text):
         return None
     else:
         return None
-
-def t_COMMAND(t):
-    r'[A-Za-z0-9_]+'
-    
-    # reject commands with digit
-    if any(ch.isdigit() for ch in t.value):
-        print(f"Invalid command: '{t.value}' (commands cannot contain digits)")
-        return None
-
-    t.value = t.value.lower()
-    if t.value in reserved:
-        t.is_reserved = True
-    else:
-        t.is_reserved = False
-    t.type = 'COMMAND'
-    return t
 
     # # command inference # disabled for now, use in parser
     # inferred = infer_command(t.value)
