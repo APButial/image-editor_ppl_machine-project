@@ -48,8 +48,9 @@ t_RPAREN = r'\)'
 t_ignore = ' \t'
 
 def t_INVALID_NUMBER(t):
-    r'\d+[A-Za-z_]+'
+    r'\d+[A-Za-z_]\w*'
     print(f"Invalid numeric literal: '{t.value}' (digits cannot contain alphabetic characters)")
+    t.lexer.skip(1)
     return None
 
 def t_NUMBER(t):
@@ -63,48 +64,35 @@ def t_COMMAND(t):
     # reject commands with digit
     if any(ch.isdigit() for ch in t.value):
         print(f"Invalid command: '{t.value}' (commands cannot contain digits)")
+        t.lexer.skip(1)
         return None
 
+    # change to lowercase for case-insensitivity
     t.value = t.value.lower()
-    t.is_reserved = t.value in reserved
-    t.type = 'COMMAND'
-    return t
+
+    # for auto-completion
+    matches = [cmd for cmd in reserved if cmd.startswith(t.value)]
+
+    if len(matches) == 1:
+        # unique
+        t.value = matches[0]
+        t.type = reserved[matches[0]]
+    elif len(matches) > 1:
+        # ambiguous
+        print(f"Ambiguous command '{t.value}': could mean {', '.join(matches)}")
+        t.lexer.skip(1)
+        return None
+    else:
+        # unknown command
+        print(f"Unknown command: '{t.value}'")
+        t.lexer.skip(1)
+        return None
 
 def t_FILENAME(t):
     # filename must be wrapped with double quotation
     r'"([^"\\]|\\.)*"'
     t.value = bytes(t.value[1:-1], "utf-8").decode("unicode_escape")
     return t
-
-def infer_command(text):
-    """
-        infers entered command for auto-completion
-    """    
-    matches = [cmd for cmd in reserved.keys() if cmd.startswith(text)]
-    if len(matches) == 1:
-        return matches[0]
-    elif len(matches) > 1:
-        print(f"Ambiguous command '{text}'. Possible matches: {matches}")
-        return None
-    else:
-        return None
-
-    # # command inference # disabled for now, use in parser
-    # inferred = infer_command(t.value)
-
-    # if inferred:
-    #     # match found
-    #     t.type = 'COMMAND'
-    #     t.value = inferred
-    # else:
-    #     # inference failed, try if in reserved
-    #     if t.value in reserved:
-    #         t.type = 'COMMAND'
-    #         t.value = t.value
-    #     else:
-    #         # unrecognized command
-    #         t.type = 'COMMAND'
-    # return t
 
 def t_OPTION(t):
     r'-[a-z]+'
