@@ -71,8 +71,8 @@ def t_NUMBER(t):
     t.value = float(t.value) if '.' in t.value else int(t.value)
     return t
 
-def t_STRING(t):
-    # string must be wrapped with double quotation
+def t_FILENAME(t):
+    # filename must be wrapped with double quotation
     r'"([^"\\]|\\.)*"'
     t.value = bytes(t.value[1:-1], "utf-8").decode("unicode_escape")
     return t
