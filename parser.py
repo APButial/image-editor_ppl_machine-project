@@ -2,6 +2,8 @@
     parser.py defines the grammar rules for the parser
 """
 
+from lexer import tokens # parser needs access to valid tokens
+
 ## Expression ##############################
 
 def p_expression_add(p):
