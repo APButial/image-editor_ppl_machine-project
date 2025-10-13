@@ -45,8 +45,23 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_ignore = ' \t'
 
+def t_PERCENT(t):
+    r'(\d+(\.\d+)?)%'
+    t.value = float(t.value[:-1])  # exclude percent sign
+    return t
+
+def t_INVALID_NUMBER(t):
+    r'\d+[A-Za-z_]+'
+    print(f"Invalid numeric literal: '{t.value}' (digits cannot contain alphabetic characters)")
+    return None
+
+def t_NUMBER(t):
+    r'\d+(\.\d+)?'
+    t.value = float(t.value) if '.' in t.value else int(t.value)
+    return t
+
 def t_COMMAND(t):
-    r'[A-Za-z0-9_]+'
+    r'[A-Za-z_][A-Za-z0-9_]*'
     
     # reject commands with digit
     if any(ch.isdigit() for ch in t.value):
@@ -59,16 +74,6 @@ def t_COMMAND(t):
     else:
         t.is_reserved = False
     t.type = 'COMMAND'
-    return t
-
-def t_PERCENT(t):
-    r'(\d+(\.\d+)?)%'
-    t.value = float(t.value[:-1])  # exclude percent sign
-    return t
-
-def t_NUMBER(t):
-    r'\d+(\.\d+)?'
-    t.value = float(t.value) if '.' in t.value else int(t.value)
     return t
 
 def t_FILENAME(t):
