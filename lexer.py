@@ -1,3 +1,6 @@
+"""
+    lexer.py defines the rules of the lexer
+"""
 reserved = {
     'blur': 'BLUR',
     'brightness': 'BRIGHTNESS',
@@ -22,7 +25,6 @@ reserved = {
 }
 
 tokens = (
-    'PERCENT',
     'NUMBER',
     'STRING',
     'COMMAND',
@@ -45,11 +47,6 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_ignore = ' \t'
 
-def t_PERCENT(t):
-    r'(\d+(\.\d+)?)%'
-    t.value = float(t.value[:-1])  # exclude percent sign
-    return t
-
 def t_INVALID_NUMBER(t):
     r'\d+[A-Za-z_]+'
     print(f"Invalid numeric literal: '{t.value}' (digits cannot contain alphabetic characters)")
@@ -69,10 +66,7 @@ def t_COMMAND(t):
         return None
 
     t.value = t.value.lower()
-    if t.value in reserved:
-        t.is_reserved = True
-    else:
-        t.is_reserved = False
+    t.is_reserved = t.value in reserved
     t.type = 'COMMAND'
     return t
 
