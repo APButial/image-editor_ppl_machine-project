@@ -4,6 +4,15 @@
 
 from lexer import tokens # parser needs access to valid tokens
 
+start = 'program' # start at this production rule
+
+# defines the precedence of the binary ops
+# list is from lower to higher precedence
+precedence = (
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+)
+
 ## Expression ##############################
 
 def p_expression_add(p):
