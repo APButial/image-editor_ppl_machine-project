@@ -46,11 +46,17 @@ def p_expression_num(p):
 
 ## Argument ################################
 
-def p_argument(p):
+def p_argument_single(p):
     '''argument : expression
                 | FILENAME
     '''
     p[0] = p[1]
+
+def p_argument_multiple(p):
+    '''argument : argument expression
+                | argument FILENAME
+    '''
+    p[0] = p[1] + [p[2]]
 
 #############################################
 
