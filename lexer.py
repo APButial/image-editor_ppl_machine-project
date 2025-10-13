@@ -26,7 +26,7 @@ reserved = {
 
 tokens = (
     'NUMBER',
-    'STRING',
+    'FILENAME',
     'COMMAND',
     'OPTION',
     'COMMA',

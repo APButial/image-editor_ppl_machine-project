@@ -76,3 +76,11 @@ def p_program_single(p):
 def p_program_multi(p):
     'program : program COMMA statement'
     p[0] = p[1] + [p[3]]
+
+##############################################
+
+def p_error(p):
+    if p:
+        print(f"Syntax error at '{p.value}'")
+    else:
+        print("Syntax error at EOF")
