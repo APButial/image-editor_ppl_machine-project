@@ -50,9 +50,9 @@ def p_argument_single(p):
     '''argument : expression
                 | FILENAME
     '''
-    p[0] = p[1]
+    p[0] = [p[1]]
 
-def p_argument_multiple(p):
+def p_argument_multi(p):
     '''argument : argument expression
                 | argument FILENAME
     '''
