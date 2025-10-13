@@ -75,7 +75,7 @@ def infer_command(text):
         return None
 
 def t_COMMAND(t):
-    r'[A-Za-z_][A-Za-z_0-9]*'
+    r'[A-Za-z0-9_]+'
     
     # reject commands with digit
     if any(ch.isdigit() for ch in t.value):
