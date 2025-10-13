@@ -96,7 +96,8 @@ def t_FILENAME(t):
     return t
 
 def t_OPTION(t):
-    r'-[a-z]+'
+    r'-[a-z]'
+    t.value = t.value[1:] # remove dash
     return t
 
 def t_error(t):
