@@ -76,11 +76,11 @@ def t_COMMAND(t):
     if len(matches) == 1:
         # unique
         t.value = matches[0]
-        t.type = reserved[matches[0]]
+        t.type = 'COMMAND'
         return t
     elif len(matches) > 1:
         # ambiguous
-        print(f"Ambiguous command '{t.value}': could mean {', '.join(matches)}")
+        print(f"Ambiguous command '{t.value}': possible matches {', '.join(matches)}")
         t.lexer.skip(1)
         return None
     else:
