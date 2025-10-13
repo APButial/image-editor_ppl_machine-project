@@ -55,7 +55,7 @@ def t_INVALID_NUMBER(t):
     return None
 
 def t_NUMBER(t):
-    r'\d+(\.\d+)?'
+    r'-?\d+(\.\d+)?'
     t.value = float(t.value) if '.' in t.value else int(t.value)
     return t
 
