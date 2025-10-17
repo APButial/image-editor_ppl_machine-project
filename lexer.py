@@ -96,8 +96,18 @@ def t_FILENAME(t):
     return t
 
 def t_OPTION(t):
-    r'-[a-z]'
-    t.value = t.value[1:] # remove dash
+    r'-[A-Za-z][A-Za-z0-9_]*'
+    if any(ch.isdigit() for ch in t.value):
+        print(f"Invalid option: '{t.value}' (options cannot contain digits)")
+        t.lexer.skip(1)
+        return None
+    
+    t.value = t.value[1:].lower() # remove dash
+    if (len(t.value) != 1):
+        print(f"Invalid command: '{t.value}' (options should only be a single character)")
+        t.lexer.skip(1)
+        return None
+
     return t
 
 def t_error(t):
