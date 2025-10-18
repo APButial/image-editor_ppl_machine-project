@@ -11,6 +11,7 @@ reserved = {
     'export': 'EXPORT',
     'exposure': 'EXPOSURE',
     'help': 'HELP',
+    'info': 'INFO',
     'open': 'OPEN',
     'redo': 'REDO',
     'remove_bg': 'REMOVE_BG',
