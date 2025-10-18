@@ -19,10 +19,7 @@ reserved = {
     'rotate': 'ROTATE',
     'saturation': 'SATURATION',
     'sharpness': 'SHARPNESS',
-    'temperature': 'TEMPERATURE',
     'undo': 'UNDO',
-    'vibrance': 'VIBRANCE',
-    'vignette': 'VIGNETTE',
 }
 
 tokens = (
